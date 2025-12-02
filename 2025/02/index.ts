@@ -9,10 +9,17 @@ function convertStrRangeToArr(range: string): number[] {
 }
 
 function containsRepeatingSequence(num: number): boolean {
-  return (
-    num.toString().substring(0, num.toString().length / 2) ===
-    num.toString().substring(num.toString().length / 2)
-  );
+  let sequence = '';
+  for (const char of num.toString()) {
+    sequence += char;
+    if (sequence === num.toString()) return false;
+
+    if (num.toString().split(sequence).every(item => item === '')) {
+      // repeating sequence found
+      if (num.toString().split(sequence).length >= 2) return true;
+    }
+  }
+  return false;
 }
 
 const input = await Bun.file("input.txt").text();
