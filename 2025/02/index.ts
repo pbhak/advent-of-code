@@ -8,15 +8,15 @@ function convertStrRangeToArr(range: string): number[] {
   return arr;
 }
 
-function containsRepeatingSequence(num: number): boolean {
-  let sequence = '';
-  for (const char of num.toString()) {
+function containsRepeatingSequence(num: string): boolean {
+  let sequence = "";
+  for (const char of num) {
     sequence += char;
-    if (sequence === num.toString()) return false;
+    if (sequence === num) return false;
 
-    if (num.toString().split(sequence).every(item => item === '')) {
+    if (num.split(sequence).every((item) => item === "")) {
       // repeating sequence found
-      if (num.toString().split(sequence).length >= 2) return true;
+      if (num.split(sequence).length >= 2) return true;
     }
   }
   return false;
@@ -26,9 +26,9 @@ const input = await Bun.file("input.txt").text();
 let sumOfInvalidIds = 0;
 
 for (const str of input.trim().split(",")) {
-  const range = convertStrRangeToArr(str);
-  for (const num of range)
-    if (containsRepeatingSequence(num)) sumOfInvalidIds += num;
+  for (const num of convertStrRangeToArr(str)) {
+    if (containsRepeatingSequence(num.toString())) sumOfInvalidIds += num;
+  }
 }
 
 console.log(sumOfInvalidIds);
