@@ -1,7 +1,6 @@
-function getLargestInArray(arr: number[], restrict: boolean): number {
+function getLargestInArray(arr: number[], upperBound: number): number {
   let cur = 0;
   let curIndex = 0;
-  const upperBound = restrict ? arr.length - 1 : arr.length;
   for (let i = 0; i < upperBound; i++) {
     const num = arr[i]!;
     if (num > cur) {
@@ -19,13 +18,15 @@ for (const line of inputFile.split("\n")) {
   let lineNum = line.split("").map((num) => parseInt(num));
   if (lineNum.length === 0) continue;
 
-  const num1 = lineNum[getLargestInArray(lineNum, true)];
-  lineNum = lineNum.slice(getLargestInArray(lineNum, true) + 1);
-  const num2 = lineNum[getLargestInArray(lineNum, false)];
+  let joltage = "";
+  for (let i = 11; i != -1; i--) {
+    const largestIndex = getLargestInArray(lineNum, lineNum.length - i);
 
-  console.log(lineNum, num1, num2, "\n")
-
-  totalJoltage += parseInt(num1!.toString() + num2!.toString());
+    joltage += lineNum[largestIndex];
+    lineNum.splice(largestIndex, 1);
+    lineNum = lineNum.slice(largestIndex);
+  }
+  totalJoltage += parseInt(joltage);
 }
 
 console.log(totalJoltage);
