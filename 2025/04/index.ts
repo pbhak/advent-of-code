@@ -1,4 +1,5 @@
 function isAccessible(array: string[], row: number, col: number): boolean {
+  // if statement-maxxing (i have gone insane)
   if (row >= array.length) return false;
   if (col >= array[col]!.length) return false;
 
@@ -23,12 +24,28 @@ function isAccessible(array: string[], row: number, col: number): boolean {
   return count < 4;
 }
 
-const input = (await Bun.file("input.txt").text()).split("\n");
-let numAccessible = 0;
-for (let row = 0; row < input.length; row++) {
-  const rowStr = input[row]!;
-  for (let col = 0; col < rowStr.length; col++)
-    if (isAccessible(input, row, col)) numAccessible++;
+let input = (await Bun.file("input.txt").text()).split("\n");
+
+let inputFrozen = [...input];
+let numRemoved = 0;
+
+while (true) {
+  for (let row = 0; row < input.length; row++) {
+    const rowStr = input[row]!;
+    for (let col = 0; col < rowStr.length; col++) {
+      if (isAccessible(input, row, col)) {
+        // remove the roll if accessible
+        let rowDup = input[row]!.split("");
+        rowDup[col] = ".";
+        input[row] = rowDup.join("");
+        numRemoved++;
+      }
+    }
+  }
+
+  // if the input remains unchanged, end loop
+  if (input.every((val, ind) => val === inputFrozen[ind])) break;
+  inputFrozen = [...input];
 }
 
-console.log(numAccessible);
+console.log(numRemoved);
